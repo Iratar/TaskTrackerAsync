@@ -1,0 +1,1 @@
+this project was created as a part of homework for the course "Asynchronous Architecture" at https://tough-dev.school/
