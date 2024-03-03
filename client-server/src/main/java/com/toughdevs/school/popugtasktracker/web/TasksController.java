@@ -14,18 +14,18 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.toughdevs.school.popugtasktracker.web.domain.Account;
 
 @RestController
-public class ArticlesController {
+public class TasksController {
 
 	@Autowired
     private WebClient webClient;
 
-    @GetMapping(value = "/articles")
+    @GetMapping(value = "/tasks")
     public String[] getArticles(
       @RegisteredOAuth2AuthorizedClient("articles-client-authorization-code") OAuth2AuthorizedClient authorizedClient
     ) {
         return this.webClient
           .get()
-          .uri("http://127.0.0.1:8090/articles")
+          .uri("http://127.0.0.1:8090/tasks")
           .attributes(oauth2AuthorizedClient(authorizedClient))
           .retrieve()
           .bodyToMono(String[].class)

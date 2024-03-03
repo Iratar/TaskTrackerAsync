@@ -1,7 +1,5 @@
 package com.toughdevs.school.popugtasktracker.repository.model;
 
-import java.util.UUID;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,7 +11,7 @@ public class AccountEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	private UUID publicId;
+	private String publicId;
 	
 	private String fullName;
 	
@@ -22,6 +20,8 @@ public class AccountEntity {
 	private boolean active;
 	
 	private String role;
+	
+	private String password;
 
 	public AccountEntity() {
 	};
@@ -40,11 +40,11 @@ public class AccountEntity {
 				+ ", active=" + active + ", role=" + role + "]";
 	}
 
-	public UUID getPublicId() {
+	public String getPublicId() {
 		return publicId;
 	}
 
-	public void setPublicId(UUID publicId) {
+	public void setPublicId(String publicId) {
 		this.publicId = publicId;
 	}
 
@@ -78,6 +78,14 @@ public class AccountEntity {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 

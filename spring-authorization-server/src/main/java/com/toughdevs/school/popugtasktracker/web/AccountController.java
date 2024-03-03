@@ -1,7 +1,6 @@
 package com.toughdevs.school.popugtasktracker.web;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +44,7 @@ public class AccountController {
 	}
 	
 	@PostMapping(path = "/deleteAccount", consumes = { MediaType.APPLICATION_FORM_URLENCODED_VALUE })
-	public Account deleteAccount(UUID publicId) throws Exception {
+	public Account deleteAccount(String publicId) throws Exception {
 		logger.info("deleteAccount: {}", publicId);
 		
 		Account account = accountsService.deleteAccount(publicId);

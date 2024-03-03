@@ -17,7 +17,7 @@ public class ResourceServerConfig {
 		 * explicitly state that every request to article resources should be authorized
 		 * and have the proper articles.read authority
 		 */
-		http.securityMatcher("/articles/**")
+		http.securityMatcher("/tasks/**")
 				.authorizeHttpRequests(authorize -> authorize.anyRequest().hasAuthority("SCOPE_articles.read"))
 				/*
 				 * oauth2ResourceServer() method, which will configure the OAuth server

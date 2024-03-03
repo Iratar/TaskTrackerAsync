@@ -25,11 +25,12 @@ public class AccountsService {
 
 	public Account registerAccount(RegisterAccountRequest request) {
 		AccountEntity accountEntity = new AccountEntity();
-		accountEntity.setPublicId(UUID.randomUUID());
+		accountEntity.setPublicId(UUID.randomUUID().toString());
 		accountEntity.setRole(RoleEnum.EMPLOYEE.name());
 		accountEntity.setActive(true);
 		accountEntity.setFullName(request.getFullName());
 		accountEntity.setEmail(request.getEmail());
+		accountEntity.setPassword(request.getPassword());
 		
 		AccountEntity acc = accountsRepository.saveAndFlush(accountEntity);
 		return accountFunctionFromDBtoRest(acc);
@@ -62,7 +63,7 @@ public class AccountsService {
 		return accountResp;
 	}
 
-	public Account deleteAccount(UUID publicId) {
+	public Account deleteAccount(String publicId) {
 		AccountEntity acc = accountsRepository.findByPublicId(publicId);
 		accountsRepository.deleteById(acc.getId());
 		return accountFunctionFromDBtoRest(acc);

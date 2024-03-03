@@ -1,7 +1,6 @@
 package com.toughdevs.school.popugtasktracker.web.domain;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 public class Account implements Serializable {
 
@@ -11,7 +10,7 @@ public class Account implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	private UUID publicId;
+	private String publicId;
 	private String email;
 	private String fullName;
 	private boolean active;
@@ -25,11 +24,11 @@ public class Account implements Serializable {
 		this.id = id;
 	}
 
-	public UUID getPublicId() {
+	public String getPublicId() {
 		return publicId;
 	}
 
-	public void setPublicId(UUID publicId) {
+	public void setPublicId(String publicId) {
 		this.publicId = publicId;
 	}
 

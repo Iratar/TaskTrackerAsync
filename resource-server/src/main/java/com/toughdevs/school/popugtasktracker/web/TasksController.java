@@ -4,10 +4,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class ArticlesController {
+public class TasksController {
 
-    @GetMapping("/articles")
-    public String[] getArticles() {
-        return new String[] { "Article 1", "Article 2", "Article 3" };
+    @GetMapping("/tasks")
+    public String[] getTasks() {
+        return new String[] { "Task 1", "Task 2", "Task 3" };
     }
 }

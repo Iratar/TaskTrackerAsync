@@ -2,22 +2,13 @@ package com.toughdevs.school.popugtasktracker.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -53,25 +44,5 @@ public class DefaultSecurityConfig {
 		return http.build();
 	}
 	
-	/** define a set of example users that we’ll use for testing. */
-	@Bean
-	UserDetailsService users() {
-	    PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-	    UserDetails user = User.builder()
-	      .username("user")
-	      .password("password")
-	      .passwordEncoder(encoder::encode)
-	      .roles("USER")
-	      .build();
-	    UserDetails admin = User.builder()
-	  	      .username("admin")
-	  	      .password("password")
-	  	      .passwordEncoder(encoder::encode)
-	  	      .roles("ADMIN")
-	  	      .build();
-	    List<UserDetails> users = new ArrayList<>();
-	    users.add(user);
-	    users.add(admin);
-		return new InMemoryUserDetailsManager(users);
-	}
+
 }
