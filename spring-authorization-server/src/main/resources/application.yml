@@ -43,8 +43,8 @@ spring:
         default_schema: auth
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-    #hibernate:
-      #ddl-auto: create-drop
+    hibernate:
+      ddl-auto: update
   sql:
     init:
       mode: always

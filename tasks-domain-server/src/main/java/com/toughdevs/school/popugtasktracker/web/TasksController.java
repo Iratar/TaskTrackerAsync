@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +13,6 @@ import com.toughdevs.school.popugtasktracker.service.TasksServiceImpl;
 import com.toughdevs.school.popugtasktracker.web.domain.TaskCreateRequest;
 import com.toughdevs.school.popugtasktracker.web.domain.TaskData;
 
-import jakarta.websocket.server.PathParam;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -35,7 +35,7 @@ public class TasksController {
     }
     
     @PostMapping("/tasks/{taskId}/complete")
-    public TaskData completeTask(@PathParam("taskId") Long taskId) {
+    public TaskData completeTask(@PathVariable("taskId") Long taskId) {
     	log.info("completeTask with id:{}", taskId);
         return tasksService.completeTask(taskId);
     }

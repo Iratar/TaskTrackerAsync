@@ -33,6 +33,8 @@ public class AccountsService {
 		accountEntity.setPassword(request.getPassword());
 		
 		AccountEntity acc = accountsRepository.saveAndFlush(accountEntity);
+		// TODO: send CUD EVENT here
+		
 		return accountFunctionFromDBtoRest(acc);
 	}
 
@@ -44,11 +46,11 @@ public class AccountsService {
 		}
 		AccountEntity accountEntity = entity.get();
 		accountEntity.setRole(request.getRole().name());
-		accountEntity.setActive(true);
 		accountEntity.setFullName(request.getFullName());
-		accountEntity.setEmail(request.getEmail());
 		
 		AccountEntity acc = accountsRepository.saveAndFlush(accountEntity);
+		// TODO: send BE EVENT here
+		
 		return accountFunctionFromDBtoRest(acc);
 	}
 

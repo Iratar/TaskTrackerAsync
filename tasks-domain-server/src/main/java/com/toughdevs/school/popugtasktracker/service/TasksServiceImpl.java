@@ -16,7 +16,6 @@ import com.toughdevs.school.popugtasktracker.repository.model.TaskEntity;
 import com.toughdevs.school.popugtasktracker.web.domain.TaskCreateRequest;
 import com.toughdevs.school.popugtasktracker.web.domain.TaskData;
 
-import jakarta.websocket.server.PathParam;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -70,7 +69,7 @@ public class TasksServiceImpl implements TasksService {
 	}
 
 	@Override
-	public TaskData completeTask(@PathParam("taskId") Long taskId) {
+	public TaskData completeTask(Long taskId) {
 		log.info("completeTask with id:{}", taskId);
 		TaskEntity task = tasksRepository.getReferenceById(taskId);
 		task.setStatus("DONE");
