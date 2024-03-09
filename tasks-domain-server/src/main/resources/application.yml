@@ -1,5 +1,12 @@
 server:
   port: 8090
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG
   
 spring:
   security:
@@ -7,3 +14,23 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://auth-server:9000
+  datasource:
+    hikari:
+      connectionTimeout: 20000
+      maximumPoolSize: 5
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: password
+  jpa:
+    properties:
+      hibernate:
+        default_schema: task_domain
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    #hibernate:
+      #ddl-auto: create-drop
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:/data.sql
+      continue-on-error: true

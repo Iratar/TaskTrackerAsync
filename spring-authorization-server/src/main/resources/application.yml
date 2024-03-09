@@ -43,10 +43,10 @@ spring:
         default_schema: auth
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-    hibernate:
-      ddl-auto: create-drop
+    #hibernate:
+      #ddl-auto: create-drop
   sql:
     init:
       mode: always
-      #schema-locations: classpath:/data.sql
+      schema-locations: classpath:/data.sql
       continue-on-error: true
