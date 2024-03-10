@@ -1,5 +1,6 @@
 package com.toughdevs.school.popugtasktracker.web;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -26,7 +27,7 @@ public class AccountController {
 	private AccountsService accountsService;
 
 	@PostMapping(path = "/registerAccount", consumes = { MediaType.APPLICATION_FORM_URLENCODED_VALUE })
-	public String registerAccount(RegisterAccountRequest request) {
+	public String registerAccount(RegisterAccountRequest request) throws IOException {
 		logger.info("registerAccount: {}", request);
 		
 		Account account = accountsService.registerAccount(request);

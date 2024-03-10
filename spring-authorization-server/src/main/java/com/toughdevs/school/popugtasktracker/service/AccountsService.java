@@ -1,5 +1,6 @@
 package com.toughdevs.school.popugtasktracker.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -7,8 +8,12 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import com.toughdevs.school.popugtasktracker.auth.kafka.ProducerAccounts;
+import com.toughdevs.school.popugtasktracker.auth.kafka.ProducerAccountsStream;
 import com.toughdevs.school.popugtasktracker.repository.AccountsRepository;
 import com.toughdevs.school.popugtasktracker.repository.model.AccountEntity;
 import com.toughdevs.school.popugtasktracker.web.domain.Account;
@@ -22,8 +27,19 @@ public class AccountsService {
 
 	@Autowired
 	private AccountsRepository accountsRepository;
-
-	public Account registerAccount(RegisterAccountRequest request) {
+	
+	@Autowired
+	private KafkaTemplate<Object, Object> template;
+	
+	@Autowired
+	private KafkaListenerEndpointRegistry kafkaListenerEndpointRegistry;
+	
+	@Autowired
+	private ProducerAccounts producerAccountsRoleUpdated;
+	@Autowired
+	private ProducerAccountsStream producerAccountsStream;
+	
+	public Account registerAccount(RegisterAccountRequest request) throws IOException {
 		AccountEntity accountEntity = new AccountEntity();
 		accountEntity.setPublicId(UUID.randomUUID().toString());
 		accountEntity.setRole(RoleEnum.EMPLOYEE.name());
@@ -33,9 +49,13 @@ public class AccountsService {
 		accountEntity.setPassword(request.getPassword());
 		
 		AccountEntity acc = accountsRepository.saveAndFlush(accountEntity);
+		Account accountData = accountFunctionFromDBtoRest(acc);
 		// TODO: send CUD EVENT here
+		//kafkaAccountsTopics.produceAccountStream();
+		//kafkaAccountsTopics.consumeAccountStream();
+		producerAccountsStream.sendMessage("ACCOUNTS.CREATED", accountData);
 		
-		return accountFunctionFromDBtoRest(acc);
+		return accountData;
 	}
 
 	public Account updateAccount(UpdateAccountRequest request) throws Exception {
@@ -50,6 +70,7 @@ public class AccountsService {
 		
 		AccountEntity acc = accountsRepository.saveAndFlush(accountEntity);
 		// TODO: send BE EVENT here
+		producerAccountsRoleUpdated.sendMessage("ACCOUNTS.ROLE_UPDATED", acc.getPublicId());
 		
 		return accountFunctionFromDBtoRest(acc);
 	}
@@ -59,7 +80,6 @@ public class AccountsService {
 		accountResp.setId(acc.getId());
 		accountResp.setPublicId(acc.getPublicId());
 		accountResp.setRole(RoleEnum.valueOf(acc.getRole()));
-		accountResp.setActive(acc.isActive());
 		accountResp.setFullName(acc.getFullName());
 		accountResp.setEmail(acc.getEmail());
 		return accountResp;
@@ -83,5 +103,20 @@ public class AccountsService {
 		}
 		return null;
 	}
+	
+	
+//	@KafkaListener(id = "accounts-stream", topics = "accounts-stream")
+//	public void listen(Account acc) {
+//		logger.info("Received: " + acc);
+//		if (acc.getId() == null) {
+//			throw new RuntimeException("failed");
+//		}
+//		
+//	}
+
+//	@KafkaListener(id = "accounts-stream.DLT", topics = "accounts-stream.DLT")
+//	public void dltListen(byte[] in) {
+//		logger.info("Received from DLT: " + new String(in));
+//	}
 
 }
