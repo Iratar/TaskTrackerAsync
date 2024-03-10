@@ -11,4 +11,5 @@ import com.toughdevs.school.popugtasktracker.repository.model.AccountEntity;
 public interface AccountsRepository  extends JpaRepository<AccountEntity, Long> {
 	
 	List<AccountEntity> findByRole(String role);
+	AccountEntity findByPublicId(String publicId);
 }
