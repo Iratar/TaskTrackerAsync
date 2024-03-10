@@ -52,7 +52,7 @@ spring:
             type:
               mapping: account:com.toughdevs.school.popugtasktracker.web.domain.Account
     consumer:
-      group-id: group_id
+      group-id: accounting_group_id
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
@@ -60,4 +60,4 @@ spring:
         spring:
           json:
             type:
-              mapping: account:com.toughdevs.school.popugtasktracker.account.domain.Account
+              mapping: account:com.toughdevs.school.popugtasktracker.accounting.service.domain.Account,taskData:com.toughdevs.school.popugtasktracker.accounting.service.domain.TaskData

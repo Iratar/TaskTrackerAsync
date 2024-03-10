@@ -13,6 +13,9 @@ import com.toughdevs.school.popugtasktracker.repository.AccountsRepository;
 import com.toughdevs.school.popugtasktracker.repository.TasksRepository;
 import com.toughdevs.school.popugtasktracker.repository.model.AccountEntity;
 import com.toughdevs.school.popugtasktracker.repository.model.TaskEntity;
+import com.toughdevs.school.popugtasktracker.tasks.kafka.ProducerTasksAssigned;
+import com.toughdevs.school.popugtasktracker.tasks.kafka.ProducerTasksCompleted;
+import com.toughdevs.school.popugtasktracker.tasks.kafka.ProducerTasksStream;
 import com.toughdevs.school.popugtasktracker.web.domain.TaskCreateRequest;
 import com.toughdevs.school.popugtasktracker.web.domain.TaskData;
 
@@ -26,6 +29,12 @@ public class TasksServiceImpl implements TasksService {
 	private TasksRepository tasksRepository;
 	@Autowired
 	private AccountsRepository accountsRepository;
+	@Autowired
+	private ProducerTasksAssigned producerTasksAssigned;
+	@Autowired
+	private ProducerTasksCompleted ProducerTasksCompleted;
+	@Autowired
+	private ProducerTasksStream producerTasksStream;
 
 	@Override
 	public List<TaskData> getTasks() {
@@ -63,9 +72,11 @@ public class TasksServiceImpl implements TasksService {
 		task.setAssignedTo(accountRandom.get().getId());
 		task.setStatus("INPROGRESS");
 		tasksRepository.saveAndFlush(task);
-		// TODO: send BE event for task assigned
-
-		return functionTaskDataFromRepoToRest(task);
+		TaskData taskData = functionTaskDataFromRepoToRest(task);
+		
+		producerTasksStream.sendMessage("TASKS.CREATED", taskData);
+		
+		return taskData;
 	}
 
 	@Override
@@ -74,9 +85,10 @@ public class TasksServiceImpl implements TasksService {
 		TaskEntity task = tasksRepository.getReferenceById(taskId);
 		task.setStatus("DONE");
 		task = tasksRepository.saveAndFlush(task);
-		// TODO: send BE event for task completed
-
-		return functionTaskDataFromRepoToRest(task);
+		TaskData taskData = functionTaskDataFromRepoToRest(task);
+		
+		ProducerTasksCompleted.sendMessage("TASKS.DONE", taskData.getPublicId());
+		return taskData;
 	}
 
 	@Override
@@ -87,7 +99,9 @@ public class TasksServiceImpl implements TasksService {
 		tasksRepository.findByStatus("INPROGRESS").stream().forEach(task -> {
 			task.setAssignedTo(accountsList.stream().findAny().get().getId());
 			tasksProcessed.add(functionTaskDataFromRepoToRest(tasksRepository.save(task)));
-			// TODO: create BE event for task assigned
+			TaskData taskData = functionTaskDataFromRepoToRest(task);
+			
+			producerTasksAssigned.sendMessage(taskData.getPublicId(), taskData.getAssignedTo().getPublicId());
 		});
 		return tasksProcessed;
 	}
