@@ -34,3 +34,30 @@ spring:
       mode: always
       schema-locations: classpath:/data.sql
       continue-on-error: true
+  kafka:
+    bootstrap-servers: pkc-7xoy1.eu-central-1.aws.confluent.cloud:9092
+    properties:
+      security:
+        protocol: SASL_SSL
+      sasl:
+        jaas:
+          config: org.apache.kafka.common.security.plain.PlainLoginModule required username='MLR6XUZ7EN5ZQFKP' password='Kj0Hstv741678qX6Igp4syXmoETmiFS25y9e8BaOlHQ1myPH2YAQa4MRrMLZ9a+V';
+        mechanism: PLAIN
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring:
+          json:
+            type:
+              mapping: account:com.toughdevs.school.popugtasktracker.web.domain.Account
+    consumer:
+      group-id: group_id
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            type:
+              mapping: account:com.toughdevs.school.popugtasktracker.account.domain.Account

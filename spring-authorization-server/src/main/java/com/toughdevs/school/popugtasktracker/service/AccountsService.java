@@ -8,8 +8,6 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import com.toughdevs.school.popugtasktracker.auth.kafka.ProducerAccounts;
@@ -27,13 +25,6 @@ public class AccountsService {
 
 	@Autowired
 	private AccountsRepository accountsRepository;
-	
-	@Autowired
-	private KafkaTemplate<Object, Object> template;
-	
-	@Autowired
-	private KafkaListenerEndpointRegistry kafkaListenerEndpointRegistry;
-	
 	@Autowired
 	private ProducerAccounts producerAccountsRoleUpdated;
 	@Autowired
@@ -50,9 +41,7 @@ public class AccountsService {
 		
 		AccountEntity acc = accountsRepository.saveAndFlush(accountEntity);
 		Account accountData = accountFunctionFromDBtoRest(acc);
-		// TODO: send CUD EVENT here
-		//kafkaAccountsTopics.produceAccountStream();
-		//kafkaAccountsTopics.consumeAccountStream();
+
 		producerAccountsStream.sendMessage("ACCOUNTS.CREATED", accountData);
 		
 		return accountData;
@@ -70,7 +59,7 @@ public class AccountsService {
 		
 		AccountEntity acc = accountsRepository.saveAndFlush(accountEntity);
 		// TODO: send BE EVENT here
-		producerAccountsRoleUpdated.sendMessage("ACCOUNTS.ROLE_UPDATED", acc.getPublicId());
+		producerAccountsRoleUpdated.sendMessage(acc.getPublicId(), acc.getRole());
 		
 		return accountFunctionFromDBtoRest(acc);
 	}
@@ -88,7 +77,11 @@ public class AccountsService {
 	public Account deleteAccount(String publicId) {
 		AccountEntity acc = accountsRepository.findByPublicId(publicId);
 		accountsRepository.deleteById(acc.getId());
-		return accountFunctionFromDBtoRest(acc);
+		Account accountData = accountFunctionFromDBtoRest(acc);
+		
+		producerAccountsStream.sendMessage("ACCOUNTS.DELETED", accountData);
+		
+		return accountData;
 	}
 
 	public List<Account> findAll() {
@@ -103,20 +96,5 @@ public class AccountsService {
 		}
 		return null;
 	}
-	
-	
-//	@KafkaListener(id = "accounts-stream", topics = "accounts-stream")
-//	public void listen(Account acc) {
-//		logger.info("Received: " + acc);
-//		if (acc.getId() == null) {
-//			throw new RuntimeException("failed");
-//		}
-//		
-//	}
-
-//	@KafkaListener(id = "accounts-stream.DLT", topics = "accounts-stream.DLT")
-//	public void dltListen(byte[] in) {
-//		logger.info("Received from DLT: " + new String(in));
-//	}
 
 }
