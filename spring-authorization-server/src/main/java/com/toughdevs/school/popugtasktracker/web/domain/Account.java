@@ -13,7 +13,6 @@ public class Account implements Serializable {
 	private String publicId;
 	private String email;
 	private String fullName;
-	private boolean active;
 	private RoleEnum role;
 
 	public Long getId() {
@@ -48,14 +47,6 @@ public class Account implements Serializable {
 		this.fullName = fullName;
 	}
 
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
 	public RoleEnum getRole() {
 		return role;
 	}
@@ -67,7 +58,7 @@ public class Account implements Serializable {
 	@Override
 	public String toString() {
 		return "Account [id=" + id + ", publicId=" + publicId + ", email=" + email + ", fullName=" + fullName
-				+ ", active=" + active + ", role=" + role + "]";
+				+ ", role=" + role + "]";
 	}
 
 }

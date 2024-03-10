@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+	<title>Hello World!</title>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h1> Accounts </h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<a class="btn btn-info" href="#" th:href="@{/accounts/list}"> Back to All Accounts </a>
+				<form action="#" class="form-horizontal" th:action="@{/updateAccount}" th:object="${form}" method="post">
+					<fieldset>
+						<span class="pull-right">
+							<input type="submit" id="submitButton" class="btn btn-success" th:value="Save">
+							<input type="reset" id="resetButton" class="btn btn-danger" th:value="Reset" />
+						</span>
+						<table>
+							<thead>
+								<tr>
+									<th></th>
+									<th> Public Id </th>
+									<th> Full Name </th>
+									<th> Role </th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input hidden th:name="id" th:value="${account.getId()}"/></td>									
+									<td><span th:text="${account.getPublicId()}"> publicId </span></td>
+									<td><input th:placeholder="'Full Name'" th:name="fullName" th:value="${account.getFullName()}" required/></td>
+									<td><input th:placeholder="'Role'" th:name="role" th:value="${account.getRole()}" required/></td>									
+								</tr>
+							</tbody>
+						</table>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

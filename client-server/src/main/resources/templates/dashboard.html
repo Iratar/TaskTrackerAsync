@@ -14,5 +14,12 @@
         <form th:action="@{/tasks}" method="get">
             <input type="submit" value="load"/>
         </form>
+        
+        <h1 th:inline="text">Create new task:</h1>
+        <form th:action="@{/tasks/create}" method="post">
+			<h3 th:inline="text">Task description:</h3>
+        	<input name="description" id="description"></input>
+            <input type="submit" value="load"/>
+        </form>
     </body>
 </html>

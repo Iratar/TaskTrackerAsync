@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+	<title>Hello World!</title>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h1> Accounts </h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<h1 th:inline="text">Accounts list:</h1>
+				<table>
+					<thead>
+						<tr>
+							<th> Id </th>
+							<th> Public Id </th>
+							<th> Full Name </th>
+							<th> Role </th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:if="${accounts.empty}">
+							<td colspan="2"> No accounts Available </td>
+						</tr>
+						<tr th:each="account : ${accounts}">
+							<td><span th:text="${account.id}"> Id </span></td>
+							<td><span th:text="${account.publicId}"> publicId </span></td>
+							<td><span th:text="${account.fullName}"> full name </span></td>
+							<td><span th:text="${account.role}"> Role </span></td>
+							<td>
+								<a class="btn btn-primary" href="#" th:href="@{'/accounts/edit/' + ${account.id}}"> Edit account </a>							
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-md-6">
+				<a class="btn btn-success" href="#" th:href="@{/signup}"> Add account </a>			
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

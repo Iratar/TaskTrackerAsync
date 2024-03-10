@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.toughdevs.school.popugtasktracker.web.domain.Account;
+import com.toughdevs.school.popugtasktracker.web.domain.TaskCreateRequest;
+import com.toughdevs.school.popugtasktracker.web.domain.TaskData;
 
 @RestController
 public class TasksController {
@@ -20,7 +23,7 @@ public class TasksController {
     private WebClient webClient;
 
     @GetMapping(value = "/tasks")
-    public String[] getArticles(
+    public List<TaskData> getTasks(
       @RegisteredOAuth2AuthorizedClient("articles-client-authorization-code") OAuth2AuthorizedClient authorizedClient
     ) {
         return this.webClient
@@ -28,7 +31,21 @@ public class TasksController {
           .uri("http://127.0.0.1:8090/tasks")
           .attributes(oauth2AuthorizedClient(authorizedClient))
           .retrieve()
-          .bodyToMono(String[].class)
+          .bodyToMono(List.class)
+          .block();
+    }
+    
+    @PostMapping(value = "/tasks/create")
+    public TaskData createNewTask(TaskCreateRequest data,
+      @RegisteredOAuth2AuthorizedClient("articles-client-authorization-code") OAuth2AuthorizedClient authorizedClient
+    ) {
+        return this.webClient
+          .post()
+          .uri("http://127.0.0.1:8090/tasks/create")
+          .bodyValue(data)
+          .attributes(oauth2AuthorizedClient(authorizedClient))
+          .retrieve()
+          .bodyToMono(TaskData.class)
           .block();
     }
     
