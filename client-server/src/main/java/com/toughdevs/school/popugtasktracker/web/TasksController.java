@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,16 +24,19 @@ public class TasksController {
     private WebClient webClient;
 
     @GetMapping(value = "/tasks")
-    public List<TaskData> getTasks(
+    public String getTasks(Model model,
       @RegisteredOAuth2AuthorizedClient("articles-client-authorization-code") OAuth2AuthorizedClient authorizedClient
     ) {
-        return this.webClient
+        List<TaskData> tasks = this.webClient
           .get()
-          .uri("http://127.0.0.1:8090/tasks")
+          .uri("http://127.0.0.1:8090/tasks/list")
           .attributes(oauth2AuthorizedClient(authorizedClient))
           .retrieve()
           .bodyToMono(List.class)
           .block();
+        
+        model.addAttribute("tasks", tasks);
+		return "tasksList";
     }
     
     @PostMapping(value = "/tasks/create")

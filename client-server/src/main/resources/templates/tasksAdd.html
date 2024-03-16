@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <title>Add new TASK page </title>
+    </head>
+    <brbody>
+		<div><label>Registration page</label></div></br></br>
+        <div th:if="${param.error}">
+            Invalid data.
+        </div>
+        <div th:if="${param.logout}">
+            You have been logged out.
+        </div>
+        </br></br>
+        <form th:action="@{/tasks/create}" method="post">
+            <div><label> Description : <input type="text" name="description"/> </label></div>
+            <div><input type="submit" value="Create task"/></div>
+        </form></br>
+        </br>
+        <div><a class="btn btn-info" href="#" th:href="@{/tasks/list}"> Back to All Tasks List </a></div>
+    </body>
+</html>

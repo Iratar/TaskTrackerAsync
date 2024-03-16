@@ -1,0 +1,18 @@
+{
+  "doc": "Sample schema to help you get started.",
+  "fields": [
+    {
+      "doc": "The double type is a double precision (64-bit) IEEE 754 floating-point number.",
+      "name": "public_id",
+      "type": "string"
+    },
+    {
+      "doc": "The string is a unicode character sequence.",
+      "name": "description",
+      "type": "string"
+    }
+  ],
+  "name": "Task_v1",
+  "namespace": "com.toughdevs.school.popugtasktracker.tasks.schema",
+  "type": "record"
+}

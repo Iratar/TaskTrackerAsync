@@ -26,7 +26,7 @@ public class ConsumerTasksCompleted {
 	@Autowired
 	private TransactionsRepository transactionsRepository;
 
-	@KafkaListener(topics = "tasks.completed", groupId = "group_be_tasks")
+	@KafkaListener(topics = "tasks.completed", groupId = "accounting_group_be_tasks_completed")
 	public void listen(String value, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
 			@Header(KafkaHeaders.RECEIVED_KEY) String key) throws JsonMappingException, JsonProcessingException {
 		logger.info(String.format("\n\n Consumed event from topic %s: key = %-10s value = %s \n\n", topic, key, value));

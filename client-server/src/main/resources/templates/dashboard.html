@@ -11,9 +11,7 @@
         </form>
         
         <h1 th:inline="text">Tasks list:</h1>
-        <form th:action="@{/tasks}" method="get">
-            <input type="submit" value="load"/>
-        </form>
+        <a class="btn btn-info" href="#" th:href="@{/tasks}"> Tasks List </a>
         
         <h1 th:inline="text">Create new task:</h1>
         <form th:action="@{/tasks/create}" method="post">

@@ -43,14 +43,14 @@ spring:
         jaas:
           config: org.apache.kafka.common.security.plain.PlainLoginModule required username='MLR6XUZ7EN5ZQFKP' password='Kj0Hstv741678qX6Igp4syXmoETmiFS25y9e8BaOlHQ1myPH2YAQa4MRrMLZ9a+V';
         mechanism: PLAIN
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      properties:
-        spring:
-          json:
-            type:
-              mapping: account:com.toughdevs.school.popugtasktracker.web.domain.Account
+    #producer:
+      #key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      #value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      #properties:
+        #spring:
+          #json:
+            #type:
+              #mapping: account:com.toughdevs.school.popugtasktracker.web.domain.Account
     consumer:
       group-id: accounting_group_id
       auto-offset-reset: earliest
@@ -60,4 +60,14 @@ spring:
         spring:
           json:
             type:
-              mapping: account:com.toughdevs.school.popugtasktracker.accounting.service.domain.Account,taskData:com.toughdevs.school.popugtasktracker.accounting.service.domain.TaskData
+              mapping: account:com.toughdevs.school.popugtasktracker.accounting.service.domain.Account,task:com.toughdevs.school.popugtasktracker.tasks.schema.Task
+              
+  cloud:
+    stream: 
+      bindings:
+        input:
+          destination: tasks-stream
+          content-type: application/*+avro
+        output:
+          destination: tasks-stream
+          content-type: application/*+avro

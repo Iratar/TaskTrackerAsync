@@ -15,7 +15,7 @@ import com.toughdevs.school.popugtasktracker.accounting.repository.tasks.TasksRe
 import com.toughdevs.school.popugtasktracker.accounting.repository.tasks.model.TaskEntity;
 import com.toughdevs.school.popugtasktracker.accounting.repository.transactions.TransactionsRepository;
 import com.toughdevs.school.popugtasktracker.accounting.repository.transactions.model.TransactionEntity;
-import com.toughdevs.school.popugtasktracker.accounting.service.domain.TaskData;
+import com.toughdevs.school.popugtasktracker.tasks.schema.Task;
 
 @Service
 public class ConsumerTasksAssigned {
@@ -27,17 +27,18 @@ public class ConsumerTasksAssigned {
 	@Autowired
 	private TransactionsRepository transactionsRepository;
 
-	@KafkaListener(topics = "tasks.assigned", groupId = "group_be_tasks")
-	public void listen(TaskData value, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
+	@KafkaListener(topics = "tasks.assigned", groupId = "accounting_group_be_tasks_assigned", properties = {
+			"spring.json.value.default.type=com.toughdevs.school.popugtasktracker.tasks.schema.Task" })
+	public void listen(Task value, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
 			@Header(KafkaHeaders.RECEIVED_KEY) String key) throws JsonMappingException, JsonProcessingException {
 		logger.info(String.format("\n\n Consumed event from topic %s: key = %-10s value = %s \n\n", topic, key, value));
 		
 		try {
-			TaskData task = value;
-			TaskEntity taskEntity = tasksRepository.findByPublicId(task.getPublicId());
+			Task task = value;
+			TaskEntity taskEntity = tasksRepository.findByPublicId(String.valueOf(task.getPublicId()));
 			if (taskEntity == null) {
 				taskEntity = new TaskEntity();
-				taskEntity.setPublicId(task.getPublicId());
+				taskEntity.setPublicId(String.valueOf(task.getPublicId()));
 				tasksRepository.saveAndFlush(taskEntity);
 			}
 			TransactionEntity transactionEntity = new TransactionEntity();

@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.toughdevs.school.popugtasktracker.repository.AccountsRepository;
-import com.toughdevs.school.popugtasktracker.repository.model.AccountEntity;
+import com.toughdevs.school.popugtasktracker.tasks.repository.AccountsRepository;
+import com.toughdevs.school.popugtasktracker.tasks.repository.model.AccountEntity;
 
 @Service
 public class ConsumerAccounts {

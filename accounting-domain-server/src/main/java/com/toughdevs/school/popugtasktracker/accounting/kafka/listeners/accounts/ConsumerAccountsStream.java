@@ -16,6 +16,7 @@ import com.toughdevs.school.popugtasktracker.accounting.repository.accounts.Acco
 import com.toughdevs.school.popugtasktracker.accounting.repository.accounts.model.AccountEntity;
 import com.toughdevs.school.popugtasktracker.accounting.service.domain.Account;
 
+
 @Service
 public class ConsumerAccountsStream {
 
@@ -24,12 +25,12 @@ public class ConsumerAccountsStream {
 	@Autowired
 	private AccountsRepository accountsRepository;
 
-	@KafkaListener(topics = "accounts-stream", groupId = "accounting_group_id")
-	public void listen(Account value, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
+	@KafkaListener(topics = "accounts-stream", groupId = "accounting_group_id", properties = {
+			"spring.json.value.default.type=com.toughdevs.school.popugtasktracker.accounting.service.domain.Account" })
+	public void listen(Account account, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
 			@Header(KafkaHeaders.RECEIVED_KEY) String key) throws JsonMappingException, JsonProcessingException {
-		logger.info(String.format("\n\n Consumed event from topic %s: key = %-10s value = %s \n\n", topic, key, value));
+		logger.info(String.format("\n\n Consumed event from topic %s: key = %-10s value = %s \n\n", topic, key, account));
 		
-		Account account = value; 
 		if (account != null) {
 			AccountEntity accountEntity = accountsRepository.findByPublicId(account.getPublicId());
 			if (accountEntity == null) {

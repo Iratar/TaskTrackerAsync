@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+	<title>Hello World!</title>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h1> Tasks </h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<h1 th:inline="text">Tasks list:</h1>
+				<table>
+					<thead>
+						<tr>
+							<th> Id </th>
+							<th> Public Id </th>
+							<th> Description </th>
+							<th> Status </th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:if="${tasks.empty}">
+							<td colspan="2"> No Tasks Available </td>
+						</tr>
+						<tr th:each="task : ${tasks}">
+							<td><span th:text="${task.id}"> Id </span></td>
+							<td><span th:text="${task.publicId}"> publicId </span></td>
+							<td><span th:text="${task.description}"> description </span></td>
+							<td><span th:text="${task.status}"> Status </span></td>
+							<td>
+								<a class="btn btn-primary" href="#" th:href="@{'/tasks/edit/' + ${task.id}}"> Edit task </a>							
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-md-6">
+				<a class="btn btn-success" href="#" th:href="@{/tasksAdd}"> Add task </a>			
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+{
+    "type": "record",
+    "name": "Task_v1",
+    "namespace": "com.toughdevs.school.popugtasktracker.tasks.schema",
+    "fields": [
+    {
+        "name": "public_id",
+        "type": "string"
+    },
+    {
+        "name": "description",
+        "type": "string"
+    }]
+}
