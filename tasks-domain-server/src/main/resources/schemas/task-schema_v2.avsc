@@ -1,0 +1,33 @@
+{
+  "doc": "Sample schema to help you get started.",
+  "fields": [
+    {
+      "doc": "The string is a unicode character sequence.",
+      "name": "id",
+      "type": "number"
+    },
+    {
+      "doc": "The double type is a double precision (64-bit) IEEE 754 floating-point number.",
+      "name": "publicId",
+      "type": "string"
+    },
+    {
+      "doc": "The string is a unicode character sequence.",
+      "name": "description",
+      "type": "string"
+    },
+    {
+      "doc": "The string is a unicode character sequence.",
+      "name": "status",
+      "type": "string"
+    },
+    {
+      "doc": "The string is a unicode character sequence.",
+      "name": "assignedTo",
+      "type": "string"
+    }
+  ],
+  "name": "Task_v2",
+  "namespace": "com.toughdevs.school.popugtasktracker.tasks.schema",
+  "type": "record"
+}
